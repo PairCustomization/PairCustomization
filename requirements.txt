@@ -1,0 +1,9 @@
+accelerate>=0.16.0
+torch>=2.0.1
+torchvision
+transformers>=4.25.1
+ftfy
+tensorboard
+Jinja2
+peft>=0.10.0
+git+https://github.com/huggingface/diffusers

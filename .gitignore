@@ -1,0 +1,3 @@
+*.pyc
+*.safetensors
+test_outputs/*
