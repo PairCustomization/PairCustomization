@@ -16,7 +16,7 @@ def run_evaluation():
 
     SDXL_pipeline = StableDiffusionXLPipelineLoraGuidance.from_pretrained("stabilityai/stable-diffusion-xl-base-1.0", vae=vae) # 
     SDXL_pipeline.to("cuda")
-    SDXL_pipeline.load_lora_weights(lora_path_name)
+    SDXL_pipeline.load_lora_weights(lora_path_name, adapter_name="style_weights")
 
     prompts = [("A photo of a dog", "in digital art style"), ("A photo of a cat", "in digital art style")]
     os.makedirs("test_outputs", exist_ok=True)
