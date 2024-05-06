@@ -49,6 +49,10 @@ We also allow for multiple LoRAs to be combined via equation (11) in section 3.3
 python evaluation_scripts/evaluate_multiple_adapters.py
 ```
 
+We also allow for controlnet conditioning. For this, run:
+```
+python evaluation_scripts/evaluate_with_controlnet.py
+```
 
 **Training a model**
 

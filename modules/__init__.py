@@ -1,1 +1,2 @@
 from .StableDiffusionXLPipelineLoraGuidance import StableDiffusionXLPipelineLoraGuidance
+from .StableDiffusionXLControlNetPipelineLoraGuidance import StableDiffusionXLControlNetPipelineLoraGuidance
