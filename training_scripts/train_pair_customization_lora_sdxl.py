@@ -1867,7 +1867,7 @@ def main(args):
                         added_cond_kwargs=unet_added_conditions_content,
                         return_dict=False,
                     )[0]
-                    loss_content = F.mse_loss(model_pred, noise, reduction="mean")
+                    loss_content = F.mse_loss(model_pred.float(), noise.float(), reduction="mean")
                     accelerator.backward(loss_content)
                     optimizer.step()
                     optimizer.zero_grad()
@@ -1883,7 +1883,7 @@ def main(args):
                             added_cond_kwargs=unet_added_conditions_style,
                             return_dict=False,
                         )[0]
-                        loss_style = F.mse_loss(model_pred, noise, reduction="mean")
+                        loss_style = F.mse_loss(model_pred.float(), noise.float(), reduction="mean")
                         accelerator.backward(loss_style)
                         optimizer.step()
                         optimizer.zero_grad()
