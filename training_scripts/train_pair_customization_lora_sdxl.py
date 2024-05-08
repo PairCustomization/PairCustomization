@@ -2215,7 +2215,7 @@ def main(args):
                 images=images,
                 base_model=args.pretrained_model_name_or_path,
                 train_text_encoder=args.train_text_encoder,
-                instance_prompt=args.instance_prompt,
+                instance_prompt=args.instance_prompt_subject + " " + args.instance_prompt_style,
                 validation_prompt=args.validation_prompt,
                 repo_folder=args.output_dir,
                 vae_path=args.pretrained_vae_model_name_or_path,
