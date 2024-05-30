@@ -54,6 +54,12 @@ We also allow for controlnet conditioning. For this, run:
 python evaluation_scripts/evaluate_with_controlnet.py
 ```
 
+Finally, we allow for real image editing via:
+```
+python evalution_scripts/evaluate_real_image.py
+```
+
+
 **Training a model**
 
 To train a model, first initialize an [🤗Accelerate](https://github.com/huggingface/accelerate/) environment via:
