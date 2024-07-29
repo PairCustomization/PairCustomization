@@ -80,6 +80,7 @@ class StableDiffusionXLPipelineLoraGuidance(StableDiffusionXLPipeline):
         denoising_end: Optional[float] = None,
         guidance_scale: float = 5.0,
         lora_guidance_scale: float = 3.0,
+        alpha_scale = 1.0,
         start_LoRA_step=800,
         lora_name="default",
         negative_prompt: Optional[Union[str, List[str]]] = None,
@@ -391,7 +392,7 @@ class StableDiffusionXLPipelineLoraGuidance(StableDiffusionXLPipeline):
 
 
         print(f"prompt: {prompt}, lora prompt add on(s): {lora_prompt_add_ons}")
-        if lora_guidance_scale is None or lora_guidance_scale == guidance_scale:
+        if (lora_guidance_scale is None or lora_guidance_scale == guidance_scale) and (start_LoRA_step is None or start_LoRA_step == 1000):
             finalized_prompt = f"{prompt} {lora_prompt_add_on}" if lora_prompt_add_on is not None else prompt
             print(f"effectively no lora guidance scale, using regular inference with prompt: {finalized_prompt}")
             prompt_embeds, negative_prompt_embeds, pooled_prompt_embeds, negative_pooled_prompt_embeds = \
@@ -445,14 +446,14 @@ class StableDiffusionXLPipelineLoraGuidance(StableDiffusionXLPipeline):
                 negative_original_size,
                 negative_crops_coords_top_left,
                 negative_target_size,
-                dtype=prompt_embeds.dtype,
+                dtype=prompt_emcompute_noisebeds.dtype,
                 text_encoder_projection_dim=text_encoder_projection_dim,
             )
         else:
             negative_add_time_ids = add_time_ids
 
         if self.do_classifier_free_guidance:
-            if lora_guidance_scale is None or lora_guidance_scale == guidance_scale:
+            if (lora_guidance_scale is None or lora_guidance_scale == guidance_scale) and (start_LoRA_step is None or start_LoRA_step == 1000):
                 prompt_embeds = torch.cat([negative_prompt_embeds, prompt_embeds], dim=0)
                 add_text_embeds = torch.cat([negative_pooled_prompt_embeds, add_text_embeds], dim=0)
                 add_time_ids = torch.cat([negative_add_time_ids, add_time_ids], dim=0)
@@ -520,7 +521,7 @@ class StableDiffusionXLPipelineLoraGuidance(StableDiffusionXLPipeline):
                 if ip_adapter_image is not None or ip_adapter_image_embeds is not None:
                     added_cond_kwargs["image_embeds"] = image_embeds
 
-                if lora_guidance_scale is not None and lora_guidance_scale != guidance_scale and (start_LoRA_step is None or t <= start_LoRA_step):
+                if lora_guidance_scale is not None and lora_guidance_scale != guidance_scale:
                     # perform style guidance as described in secion 3.3 of the paper
                     self.set_adapters(lora_name, 0)
                     noise_pred_main = self.unet(
@@ -538,8 +539,7 @@ class StableDiffusionXLPipelineLoraGuidance(StableDiffusionXLPipeline):
                     # allow for multiple lora prompt add ons as in equation (11) in section 3.3
                     # if only one lora prompt as in equation (10), lora_names will have size 1
                     for index, (lora_name, lora_guidance_scale) in enumerate(zip(lora_names, lora_guidance_scales)):
-                        self.set_adapters(lora_name, 1)
-
+                        self.set_adapters(lora_name, alpha_scale)
                         noise_pred_lora = self.unet(
                             latent_model_input[1:],
                             t,
@@ -558,17 +558,25 @@ class StableDiffusionXLPipelineLoraGuidance(StableDiffusionXLPipeline):
                         # Based on 3.4. in https://arxiv.org/pdf/2305.08891.pdf
                         noise_pred = rescale_noise_cfg(noise_pred, noise_pred_text, guidance_rescale=self.guidance_rescale)
                 else:
-                    # we are doing style guidance, but we are not at the necessary step yet
-                    if (start_LoRA_step is not None and t > start_LoRA_step) and (lora_guidance_scale is not None and lora_guidance_scale != guidance_scale):
+                   # turn off adapters if at an early step
+                    if (start_LoRA_step is not None and t > start_LoRA_step):
+                        for lora_name in lora_names:
+                            self.set_adapters(lora_name, 0)
                         prompt_embeds_to_use = prompt_embeds[0:2]
                         text_embeds_to_use = add_text_embeds[0:2]
                         time_ids_to_use = add_time_ids[0:2]
-                        for lora_name in lora_names:
-                            self.set_adapters(lora_name, 0)
                     else:
-                        prompt_embeds_to_use = prompt_embeds
-                        text_embeds_to_use = add_text_embeds
-                        time_ids_to_use = add_time_ids
+                        for lora_name in lora_names:
+                            self.set_adapters(lora_name, alpha_scale)
+                        if start_LoRA_step is not None:
+                            prompt_embeds_to_use = torch.cat([prompt_embeds[0:1], prompt_embeds[2:]], dim=0)
+                            text_embeds_to_use = torch.cat([add_text_embeds[0:1], add_text_embeds[2:]], dim=0)
+                            time_ids_to_use = add_time_ids 
+                        else:
+                            prompt_embeds_to_use = prompt_embeds
+                            text_embeds_to_use = add_text_embeds
+                            time_ids_to_use = add_time_ids
+
                     noise_pred = self.unet(
                         latent_model_input,
                         t,
@@ -578,6 +586,7 @@ class StableDiffusionXLPipelineLoraGuidance(StableDiffusionXLPipeline):
                         added_cond_kwargs={"text_embeds": text_embeds_to_use, "time_ids": time_ids_to_use},
                         return_dict=False,
                     )[0]
+
                     if self.do_classifier_free_guidance:
                         noise_pred_uncond, noise_pred_cond = noise_pred.chunk(2)
                         noise_pred = noise_pred_uncond + guidance_scale * (noise_pred_cond - noise_pred_uncond)
