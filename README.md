@@ -6,7 +6,8 @@
 
 https://github.com/PairCustomization/PairCustomization/assets/168593153/79f5bd4a-e163-40fa-ac80-288b65b7bd40
 
-
+## News and Updates
+Added Flux compatibility!!! Check out the [Flux README](PairCustomizationFlux/Flux_ReadMe.md) for more info :)
 
 ## Getting Started
 **Environment Setup**
