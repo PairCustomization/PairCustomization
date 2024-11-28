@@ -1,0 +1,44 @@
+model_name: "flux-dev"
+data_config:
+  train_batch_size: 1
+  num_workers: 4
+  img_size: 512
+  content_img_dir: data/dog_digital_art_style/real
+  content_img_captions: 
+      - "a photo of a sbu dog"
+  style_img_dir: data/dog_digital_art_style/styled
+  style_img_captions:
+      - "a photo of a sbu dog in digital illustration style"
+  random_ratio: true # support multi crop preprocessing
+report_to: wandb
+train_batch_size: 1
+output_dir: example_loras/trained-dog-digital-art-style-disjoint/
+max_train_steps: 3000 # this is the total number of steps in total, so when gradient accumulation is 2, wandb will show 1500 steps
+style_weight_start_training_step: 750 # this is 750 weight updates, so when gradient accumulation is 2, it s 1500 of the 3000 max_train_steps
+learning_rate: 1e-5
+lr_scheduler: constant
+lr_warmup_steps: 10
+adam_beta1: 0.9
+adam_beta2: 0.999
+adam_weight_decay: 0.01
+adam_epsilon: 1e-8
+max_grad_norm: 1.0
+logging_dir: logs
+mixed_precision: "bf16"
+checkpointing_steps: 250
+checkpoints_total_limit: 10
+tracker_project_name: lora_test
+resume_from_checkpoint: false
+gradient_accumulation_steps: 2
+rank: 32
+single_blocks_content: even
+double_blocks_content: even
+single_blocks_style: odd
+double_blocks_style: odd
+disable_sampling: false
+sample_every: 250 # sample every this many steps
+sample_width: 1024
+sample_height: 1024
+sample_steps: 20
+sample_prompts:
+    - "a photo of a sbu dog"
