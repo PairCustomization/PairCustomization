@@ -20,7 +20,7 @@ The flux implementation of our method.
     git clone https://github.com/maxwelljones14/PairCustomization.git
     cd PairCustomization/PairCustomizationFlux
     ```
- - We provide a [txt file](requirements.txt) that contains all the required dependencies. 
+ - We provide a [txt file](requirements.txt) that contains all the required dependencies. **NOTE** These dependencies are different than the ones for the SDXL version of the model, so please make a new environment if you are doing flux training! 
     ```
     pip install -r requirements.txt
     ```
