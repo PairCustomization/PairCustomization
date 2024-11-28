@@ -4,6 +4,14 @@ The flux implementation of our method.
 
 [**Paper**](https://arxiv.org/abs/2405.01536) | [**Project Page**](https://maxwelljon.es/project_pages/PairCustomization/index.html)
 
+### Training Pair
+<img src="data/dog_digital_art_style/real/dog.png" width="400" /> <img src="data/dog_digital_art_style/styled/dog.png" width="400" />
+
+### Generated Images With and Without Style After Training
+<img src="flux_images/dog.png" width="400" /> <img src="flux_images/styled_dog.png" width="400" />
+<img src="flux_images/cat.png" width="400" /> <img src="flux_images/styled_cat.png" width="400" />
+<img src="flux_images/man.png" width="400" /> <img src="flux_images/styled_man.png" width="400" />
+
 
 ## Getting Started
 **Environment Setup**
@@ -46,9 +54,8 @@ If you experience overfitting to the training image/not enough style application
 **Training a model**
 
 To train a model, we provide a training script based on the [xflux lora implementation](https://github.com/XLabs-AI/x-flux) for the flux model. 
-The training code is currently set up to train using the following image pair:
+The training code is currently set up to train using the image pair in the initial example:
 
-<img src="data/dog_digital_art_style/real/dog.png" width="400" /> <img src="data/dog_digital_art_style/styled/dog.png" width="400" />
 
 curtesy of [Jack Parkhouse](https://www.instagram.com/parkhouse_art/)
 
