@@ -31,10 +31,10 @@ The flux implementation of our method.
   pip install -r requirements.txt
   ```
 
-- Alternatively, you can create a conda environment in the following way: 
+- Alternatively, you can create a conda environment in the following way (make sure you are in the PairCustomizationFlux folder): 
   ```
-  conda create --name PairCustomization
-  conda activate PairCustomization
+  conda create --name PairCustomizationFlux
+  conda activate PairCustomizationFlux
   pip install -r requirements.txt
   ```
 Make sure to confirm that torch.cuda.is_available() is true
