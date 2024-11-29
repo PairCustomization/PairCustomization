@@ -54,10 +54,7 @@ If you experience overfitting to the training image/not enough style application
 **Training a model**
 
 To train a model, we provide a training script based on the [xflux lora implementation](https://github.com/XLabs-AI/x-flux) for the flux model. 
-The training code is currently set up to train using the image pair in the initial example:
-
-
-curtesy of [Jack Parkhouse](https://www.instagram.com/parkhouse_art/)
+The training code is currently set up to train using the image pair in the initial example curtesy of [Jack Parkhouse](https://www.instagram.com/parkhouse_art/)
 
 To run the training script, first you need to set the ```output_dir``` variable in the training/test_pair_customization_original.yaml file in PairCustomizationFlux. After that, you can simply run: 
 ```
