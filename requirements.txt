@@ -7,3 +7,4 @@ tensorboard
 Jinja2
 peft>=0.10.0
 git+https://github.com/huggingface/diffusers
+pyrallis
