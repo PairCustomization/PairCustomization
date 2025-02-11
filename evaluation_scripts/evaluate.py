@@ -40,6 +40,7 @@ def run_evaluation():
                             num_inference_steps=50,
                             guidance_scale=5.0,
                             lora_guidance_scale=None,
+                            lora_name=None
                             ).images[0]
         images.save(f"test_outputs/test_output_{prompt.replace(' ', '_')}_seed_{random_seed}_no_lora.png")
 if __name__ == "__main__":
