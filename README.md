@@ -38,7 +38,7 @@ Make sure to confirm that torch.cuda.is_available() is true
 
 **Evaluating a model**
 
-We provide example trained model weights at [this link](https://drive.google.com/drive/folders/1KeZwisE6s-FqS6wGkdb6exHASfOsPg6A?usp=drive_link).
+We provide example trained model weights at [this link](https://www.cs.cmu.edu/~model-weight-storage/).
 
  To evaluate a model, run
 ```
