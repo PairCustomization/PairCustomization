@@ -353,11 +353,16 @@ class StableDiffusionXLPipelineLoraGuidance(StableDiffusionXLPipeline):
         else:
             lora_guidance_scales = lora_guidance_scale
 
+        if lora_name is None:
+            # no lora applied, turn off style guidance
+            start_LoRA_step = 0
+            lora_name = []
+
         if type(lora_name) == str:
             lora_names = [lora_name]
         else:
             lora_names = lora_name
-        if lora_prompt_add_ons is not None:
+        if lora_prompt_add_ons != [None]:
             assert len(lora_guidance_scales) == len(lora_prompt_add_ons) == len(lora_prompt_add_on_2s) == len(lora_names), "lora_name, lora guidance scale, lora prompt add ons, and lora prompt add ons 2 must be the same length"
 
         prompt_embeds_lora_list, negative_prompt_embeds_lora_list, pooled_prompt_embeds_lora_list, negative_pooled_prompt_embeds_lora_list = \
