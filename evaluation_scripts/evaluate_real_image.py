@@ -51,6 +51,7 @@ def run_evaluation():
     scheduler_type = "DDIM"
     pipe_inversion, pipe_inference = ReNoiseGetPipes(model_type, scheduler_type, device=device)
     del pipe_inference
+    os.makedirs("test_outputs", exists_ok=True)
 
     config = ReNoiseRunConfig(model_type = model_type,
                         num_inference_steps = parameters["num_inference_steps"],
