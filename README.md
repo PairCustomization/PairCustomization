@@ -38,7 +38,14 @@ Make sure to confirm that torch.cuda.is_available() is true
 
 **Evaluating a model**
 
-We provide example trained model weights at [this link](https://www.cs.cmu.edu/~model-weight-storage/).
+We provide example trained model weights at [this link](https://www.cs.cmu.edu/~model-weight-storage/). They should go in a folder named example_loras inside of the PairCustomization folder
+
+```
+mkdir example_loras
+cd example_loras
+wget https://www.cs.cmu.edu/~model-weight-storage/lora-dog-digital-art-style.safetensors
+wget https://www.cs.cmu.edu/~model-weight-storage/lora-man-painting-style.safetensors
+```
 
  To evaluate a model, run
 ```
