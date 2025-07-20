@@ -12,7 +12,7 @@ Added Flux compatibility!!! Check out the [Flux README](PairCustomizationFlux/Fl
 
 ## Getting Started
 **Environment Setup**
-- First clone our environment and cd into the corresponding folder: 
+- First clone our environment and cd into the corresponding folder (make sure you use python >= 3.10): 
     ```
     git clone https://github.com/PairCustomization/PairCustomization.git
     cd PairCustomization  
